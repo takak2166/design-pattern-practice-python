@@ -1,0 +1,2 @@
+# design_pattern
+Pythonでデザインパターンを実装してみる
