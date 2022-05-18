@@ -1,3 +1,6 @@
+from logging import raiseExceptions
+
+
 class NormalSingleton:
     _instance = None
 
@@ -22,6 +25,25 @@ class SimpleSingleton:
             cls._instance = super().__new__(cls) # ここをcls(input)にすると__new__がもう一回呼び出されて無限ループ
         return cls._instance
 
+class Singleton:
+    _instance = None
+
+    def __new__(cls, input):
+        raise NotImplementedError('Cannot initialize via Constructor')
+    
+    @classmethod
+    def __internal_new__(cls, input):
+        cls.input = input
+        return super().__new__(cls)
+
+    @classmethod
+    def get_instance(cls, input):
+        if not cls._instance:
+            cls._instance = cls.__internal_new__(input)  # 変更
+
+        return cls._instance
+
+
 if __name__ == '__main__':
     a = NormalSingleton.get_instance(1)
     b = NormalSingleton.get_instance(2)
@@ -35,5 +57,8 @@ if __name__ == '__main__':
     e = SimpleSingleton(2)
     print("d.input={0}, e.input={1}".format(d.input, e.input))
 
-    e.input = 100
-    print("d.input={0}, e.input={1}".format(d.input, e.input))
+    f = Singleton.get_instance(1)
+    g = Singleton.get_instance(2)
+    print("f.input={0}, g.input={1}".format(f.input, g.input))
+
+    h = Singleton(3) # error!
