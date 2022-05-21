@@ -1,6 +1,6 @@
 from logging import raiseExceptions
 
-
+# 本の内容を愚直にPythonで書き直してみた例
 class NormalSingleton:
     _instance = None
 
@@ -14,6 +14,7 @@ class NormalSingleton:
 
         return cls._instance
 
+# PythonなりのSingletonの実装
 class SimpleSingleton:
     _instance = None
 
@@ -25,6 +26,7 @@ class SimpleSingleton:
             cls._instance = super().__new__(cls) # ここをcls(input)にすると__new__がもう一回呼び出されて無限ループ
         return cls._instance
 
+# 正確な（？）Singletonの実装
 class Singleton:
     _instance = None
 
