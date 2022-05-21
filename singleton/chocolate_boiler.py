@@ -1,12 +1,23 @@
 class ChocolateBoiler:
     __instance = None
-    __empty = True
+    __empty = False
     __boiled = False
 
     def __new__(cls):
-        if cls.__instance is None:
-            cls.__instance = super().__new__(cls)
-        return cls.__instance
+         raise NotImplementedError('Cannot initialize via Constructor')
+
+    @classmethod
+    def __internal_new__(cls):
+        cls.__empty = True
+        cls.__boiled = False
+        return super().__new__(cls)
+ 
+    @classmethod
+    def get_instance(cls):
+         if not cls.__instance:
+             cls.__instance = cls.__internal_new__()  # 変更
+ 
+         return cls.__instance
 
     def fill(self):
         if self.is_empty():
@@ -31,11 +42,11 @@ class ChocolateBoiler:
         return self.__boiled
 
 if __name__ == '__main__':
-    boiler1 = ChocolateBoiler()
+    boiler1 = ChocolateBoiler.get_instance()
     boiler1.fill()
     
-    boiler2 = ChocolateBoiler()
+    boiler2 = ChocolateBoiler.get_instance()
     boiler2.boil()
 
-    boiler3 = ChocolateBoiler()
+    boiler3 = ChocolateBoiler.get_instance()
     boiler3.drain()
